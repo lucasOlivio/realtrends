@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  server:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./compose/local/server/Dockerfile
+    image: realtrends_server
+    container_name: realtrends_server
+    volumes:
+      - ./server:/server:z
+    env_file:
+      - ./.envs/test/.server
+    ports:
+      - "8000:8000"
+    command: /start

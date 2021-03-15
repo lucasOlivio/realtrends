@@ -7,26 +7,30 @@ APPS_DIR = environ.Path(__file__) - 2
 env = environ.Env()
 
 INSTALLED_APPS = (
-    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
     "django.contrib.sessions",
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_extensions",
+    "django.contrib.humanize",
     # Third party apps
     # Your apps
     "realtrends.core",
 )
 
 # https://docs.djangoproject.com/en/2.0/topics/http/middleware/
-MIDDLEWARE = (
+MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-)
+]
 
 ALLOWED_HOSTS = ["*"]
 ROOT_URLCONF = "realtrends.urls"
@@ -36,7 +40,7 @@ WSGI_APPLICATION = "realtrends.wsgi.application"
 ADMINS = (("Author", "lucas27_olivio@hotmail.com"),)
 
 # Postgres
-DATABASES = {}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "db.sqlite3"}}
 
 # General
 APPEND_SLASH = True
@@ -60,18 +64,31 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = str(APPS_DIR("media"))
 MEDIA_URL = "/media/"
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
     {
+        # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": STATICFILES_DIRS,
-        "APP_DIRS": True,
+        # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
+        "DIRS": [str(APPS_DIR.path("templates"))],
         "OPTIONS": {
+            # https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
+            # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
+            # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-            ]
+            ],
         },
     }
 ]
@@ -79,17 +96,6 @@ TEMPLATES = [
 # Set DEBUG to False as a default for safety
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool("DJANGO_DEBUG", False)
-
-# Password Validation
-# https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#module-django.contrib.auth.password_validation
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
 
 # Logging
 LOGGING = {
@@ -138,24 +144,6 @@ LOGGING = {
     },
 }
 
-# Custom user app
-AUTH_USER_MODEL = "users.User"
-
-# Django Rest Framework
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": env.int("DJANGO_PAGINATION_LIMIT", 10),
-    "DATETIME_FORMAT": "%d/%m/%Y %H:%M:%S",
-    "DEFAULT_RENDERER_CLASSES": (
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
-
 # CACHES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
@@ -172,3 +160,6 @@ CACHES = {
     }
 }
 CACHE_TTL = 60 * 15
+
+
+MERCADO_API_TOKEN = env.str("MERCADO_API_TOKEN", "")

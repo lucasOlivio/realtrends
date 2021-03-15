@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Real Trends test project</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/icon/favicon.png' %}">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Webapp test project to integrate mercado libre API">
+    <meta name="author" content="Lucas de Moraes Olivio">
+
+    <!-- Styles -->
+    {% block css %}
+      {% include 'css.html' %}
+    {% endblock css %}
+</head>
+
+<body class="bg-light">
+    <nav class="nav blue darken-4">
+      <div class="nav-wrapper">
+        <ul id="nav-mobile" class="right">
+          <li><a href="{% url 'category-top-sellers' %}">Top sellers</a></li>
+          <li><a href="{% url 'category-top-prices' %}">Top prices</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div id="app">
+      {% block main %}
+        <main>
+          {% block content %}
+          {% endblock content %}
+        </main>
+      {% endblock main %}
+    </div>
+    {% block js %}
+      {% include 'js.html' %}
+    {% endblock js %}
+</body>
+
+</html>

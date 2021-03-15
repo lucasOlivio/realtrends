@@ -2,3 +2,7 @@
 Django==3.1.5
 django-redis==4.12.1
 django-environ==0.4.5
+more-itertools==8.7.0
+
+# Mercado libre
+git+https://github.com/mercadolibre/python-sdk.git

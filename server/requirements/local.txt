@@ -21,6 +21,5 @@ django-debug-toolbar==3.2
 
 # Django
 django-debug-toolbar==3.2
-django-extensions==3.1.0
 django-coverage-plugin==1.8.0
 pytest-django==4.1.0

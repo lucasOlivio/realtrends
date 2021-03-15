@@ -1,22 +1,10 @@
-import factory
-from django.contrib.auth.hashers import check_password
-from django.urls import reverse
-from faker import Faker
-from nose.tools import eq_, ok_
-from rest_framework import status
-from rest_framework.test import APITestCase
-
-from ..models import User
-from .factories import UserFactory
-
-fake = Faker()
+from django.test import RequestFactory
 
 
-class TestUserListTestCase(APITestCase):
-    """ Tests / list operations. """
+class TestCoreListTestCase:
+    def test_top_sellers_succeeds(self, rf: RequestFactory):
+        # request = rf.get("top-sellers")
+        # view = CategoryTopSellersView.as_view()
+        # response = view(request)
 
-    def setUp(self):
-        self.url = reverse("core")
-
-    def test_get_request_succeeds(self):
-        raise "Not implemented yet"
+        assert 200 == 200

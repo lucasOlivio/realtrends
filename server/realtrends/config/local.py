@@ -1,7 +1,6 @@
 from realtrends.config.common import *
 
 DEBUG = True
-AUTH_PASSWORD_VALIDATORS = []
 
 # Testing
 # ------------------------------------------------------------------------------
